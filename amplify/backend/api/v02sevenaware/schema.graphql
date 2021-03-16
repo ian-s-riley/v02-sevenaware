@@ -1,0 +1,89 @@
+type Form @model
+@key(name: "formsByLenderId", fields:["lenderId", "name"], queryField: "formsByLenderId")
+{
+  id: ID!
+  name: String!  
+	code: String
+  ref: String	
+  image: String
+	description: String
+  helpImage: String
+	helpCategory: String
+	helpTitle: String
+	helpDescription: String
+  legalImage: String
+	legalCategory: String
+  legalTitle: String
+  legalDescription: String
+  dox: String
+	isComplete: Boolean
+  isTopLevel: Boolean
+  isArray: Boolean
+  businessIntelligence: String
+  userId: String
+  lenderId: String!
+  Field:[FieldFormJoin]!@connection(keyName: "byForm", fields: ["id"])
+  Subform:[SubformFormJoin]!@connection(keyName: "byForm", fields: ["id"])
+  ArrayForm:[ArrayFormJoin]!@connection(keyName: "byForm", fields: ["id"])
+ }
+
+type Field  @model
+@key(name: "fieldsByLenderId", fields:["lenderId", "name"], queryField: "fieldsByLenderId")
+{
+  id: ID!
+	name: String!
+	code: String
+  ref: String
+	description: String
+	fieldType: String	
+	value: String
+	defaultValue: String
+	options: String
+	userId: String
+	lenderId: String!
+	label: String
+	helpText: String 
+  image: String
+	dox: String
+  size: Int
+  businessIntelligence: String
+  Form: [FieldFormJoin]!@connection(keyName: "byField", fields: ["id"])
+}
+
+type FieldFormJoin @model
+@key(name: "byForm", fields: ["FormID", "FieldID"])
+@key(name: "byField", fields: ["FieldID", "FormID"])
+@key(name: "fieldsByForm", fields:["FormID", "order"], queryField: "fieldsByForm")
+{
+  id: ID!
+  FormID: ID!
+  FieldID: ID!
+  order: Int
+  Form: Form! @connection(fields: ["FormID"])      
+  Field: Field! @connection(fields: ["FieldID"])
+}
+
+type SubformFormJoin @model
+@key(name: "byForm", fields: ["FormID", "SubformID"])
+@key(name: "bySubform", fields: ["SubformID", "FormID"])
+@key(name: "formsByForm", fields:["FormID", "order"], queryField: "formsByForm")
+{
+  id: ID!
+  FormID: ID!
+  SubformID: ID!
+  order: Int
+  Form: Form! @connection(fields: ["FormID"])      
+  Subform: Form! @connection(fields: ["SubformID"])
+}
+
+type ArrayFormJoin @model
+@key(name: "byForm", fields: ["FormID", "ArrayFormID"])
+@key(name: "byArrayForm", fields: ["ArrayFormID", "FormID"])
+{
+  id: ID!
+  FormID: ID!
+  ArrayFormID: ID!
+  order: Int
+  Form: Form! @connection(fields: ["FormID"])      
+  ArrayForm: Form! @connection(fields: ["ArrayFormID"])
+}

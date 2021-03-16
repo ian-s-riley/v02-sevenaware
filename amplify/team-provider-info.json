@@ -10,6 +10,11 @@
       "StackName": "amplify-v02sevenaware-dev-204743",
       "StackId": "arn:aws:cloudformation:us-east-1:059437111214:stack/amplify-v02sevenaware-dev-204743/fc6bbae0-8601-11eb-903d-12695902b27f",
       "AmplifyAppId": "d39skb67dk2x6f"
+    },
+    "categories": {
+      "auth": {
+        "v02sevenawaredfa9891e": {}
+      }
     }
   }
 }
