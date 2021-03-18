@@ -77,6 +77,23 @@ export default function Dashboard() {
   return (
     <div>
       <GridContainer>
+      <GridItem xs={12} sm={6} md={6} lg={3}>
+          <Card>
+            <CardHeader color="success" stats icon>
+              <CardIcon color="success">
+                <Store />
+              </CardIcon>
+              <p className={classes.cardCategory}>Current Loan Application</p>
+              <h3 className={classes.cardTitle}>$34,245</h3>
+            </CardHeader>
+            <CardFooter stats>
+              <div className={classes.stats}>
+                <DateRange />
+                Last 24 Hours
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
         <GridItem xs={12} sm={6} md={6} lg={3}>
           <Card>
             <CardHeader color="warning" stats icon>
@@ -99,24 +116,7 @@ export default function Dashboard() {
               </div>
             </CardFooter>
           </Card>
-        </GridItem>
-        <GridItem xs={12} sm={6} md={6} lg={3}>
-          <Card>
-            <CardHeader color="success" stats icon>
-              <CardIcon color="success">
-                <Store />
-              </CardIcon>
-              <p className={classes.cardCategory}>Revenue</p>
-              <h3 className={classes.cardTitle}>$34,245</h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <DateRange />
-                Last 24 Hours
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
+        </GridItem>        
         <GridItem xs={12} sm={6} md={6} lg={3}>
           <Card>
             <CardHeader color="danger" stats icon>

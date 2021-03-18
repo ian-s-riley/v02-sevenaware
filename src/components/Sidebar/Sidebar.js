@@ -364,7 +364,7 @@ class Sidebar extends React.Component {
               onClick={() => this.openCollapse("openAvatar")}
             >
               <ListItemText
-                primary={"John Doe"}
+                primary={"my@email.com"}
                 secondary={
                   <b
                     className={
@@ -390,14 +390,30 @@ class Sidebar extends React.Component {
                     }
                   >
                     <span className={collapseItemMini}>
-                      MP
+                      P
                     </span>
                     <ListItemText
-                      primary="My Profile"
+                      primary="Profile"
                       disableTypography={true}
                       className={collapseItemText}
                     />
                   </NavLink>
+                </ListItem>
+                <ListItem className={classes.collapseItem}>
+                  <NavLink
+                    to="/auth"
+                    className={
+                      classes.itemLink + " " + classes.userCollapseLinks
+                    }>
+                  <span className={collapseItemMini}>
+                      X
+                    </span>
+                  <ListItemText
+                      primary="Sign Out"
+                      disableTypography={true}
+                      className={collapseItemText}
+                    />
+                    </NavLink>
                 </ListItem>
               </List>
             </Collapse>

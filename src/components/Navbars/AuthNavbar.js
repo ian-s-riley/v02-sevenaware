@@ -56,21 +56,6 @@ export default function AuthNavbar(props) {
       </ListItem>
       <ListItem className={classes.listItem}>
         <NavLink
-          to={"/auth/pricing-page"}
-          className={cx(classes.navLink, {
-            [classes.navLinkActive]: activeRoute("/auth/pricing-page")
-          })}
-        >
-          <MonetizationOn className={classes.listItemIcon} />
-          <ListItemText
-            primary={"Pricing"}
-            disableTypography={true}
-            className={classes.listItemText}
-          />
-        </NavLink>
-      </ListItem>
-      <ListItem className={classes.listItem}>
-        <NavLink
           to={"/auth/register-page"}
           className={cx(classes.navLink, {
             [classes.navLinkActive]: activeRoute("/auth/register-page")
@@ -94,21 +79,6 @@ export default function AuthNavbar(props) {
           <Fingerprint className={classes.listItemIcon} />
           <ListItemText
             primary={"Login"}
-            disableTypography={true}
-            className={classes.listItemText}
-          />
-        </NavLink>
-      </ListItem>
-      <ListItem className={classes.listItem}>
-        <NavLink
-          to={"/auth/lock-screen-page"}
-          className={cx(classes.navLink, {
-            [classes.navLinkActive]: activeRoute("/auth/lock-screen-page")
-          })}
-        >
-          <LockOpen className={classes.listItemIcon} />
-          <ListItemText
-            primary={"Lock"}
             disableTypography={true}
             className={classes.listItemText}
           />

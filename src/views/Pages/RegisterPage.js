@@ -1,4 +1,5 @@
-import React from "react";
+import React, {useState} from "react";
+import { Auth } from 'aws-amplify';
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -21,16 +22,62 @@ import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import Button from "components/CustomButtons/Button.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
-import InfoArea from "components/InfoArea/InfoArea.js";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
+import CardHeader from "components/Card/CardHeader.js";
+import CardFooter from "components/Card/CardFooter.js";
 
-import styles from "assets/jss/material-dashboard-pro-react/views/registerPageStyle";
+import styles from "assets/jss/material-dashboard-pro-react/views/loginPageStyle.js";
 
 const useStyles = makeStyles(styles);
 
 export default function RegisterPage() {
-  const [checked, setChecked] = React.useState([]);
+  const [cardAnimaton, setCardAnimation] = useState("cardHidden");
+  const [checked, setChecked] = useState([]);
+  const [user, setUser] = useState({ email: "", name:"", password: "", phone: "", confirmCode: "" })
+  const [confirmUser, setConfirmUser] = useState(false);
+
+  React.useEffect(() => {
+    let id = setTimeout(function() {
+      setCardAnimation("");
+    }, 700);
+    // Specify how to clean up after this effect:
+    return function cleanup() {
+      window.clearTimeout(id);
+    };
+  });
+
+  async function signUp() {
+      try {
+          const { newUser } = await Auth.signUp({
+              username: user.email,
+              password: user.password,
+              attributes: {
+                  email: user.email,          // optional
+                  //phone_number: user.phone,   // optional - E.164 number convention
+                  // other custom attributes 
+              }
+          });
+          console.log('signUp: user', newUser);
+          setConfirmUser(true)
+      } catch (error) {
+          console.log('error signing up:', error);
+      }
+  }
+
+  async function confirmSignUp() {
+      try {
+        await Auth.confirmSignUp(user.email, user.confirmCode);
+      } catch (error) {
+          console.log('error confirming sign up', error);
+      }
+  }
+
+  function handleChange(e) {
+    const {id, value} = e.currentTarget;
+    setUser({ ...user, [id]: value})      
+  }
+
   const handleToggle = value => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
@@ -42,106 +89,91 @@ export default function RegisterPage() {
     }
     setChecked(newChecked);
   };
+  
   const classes = useStyles();
+  
   return (
     <div className={classes.container}>
-      <GridContainer justify="center">
-        <GridItem xs={12} sm={12} md={10}>
-          <Card className={classes.cardSignup}>
-            <h2 className={classes.cardTitle}>Register</h2>
-            <CardBody>
-              <GridContainer justify="center">
-                <GridItem xs={12} sm={12} md={5}>
-                  <InfoArea
-                    title="Marketing"
-                    description="We've created the marketing campaign of the website. It was a very interesting collaboration."
-                    icon={Timeline}
-                    iconColor="rose"
-                  />
-                  <InfoArea
-                    title="Fully Coded in HTML5"
-                    description="We've developed the website with HTML5 and CSS3. The client has access to the code using GitHub."
-                    icon={Code}
-                    iconColor="primary"
-                  />
-                  <InfoArea
-                    title="Built Audience"
-                    description="There is also a Fully Customizable CMS Admin Dashboard for this product."
-                    icon={Group}
-                    iconColor="info"
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={8} md={5}>
-                  <div className={classes.center}>
-                    <Button justIcon round color="twitter">
-                      <i className="fab fa-twitter" />
-                    </Button>
-                    {` `}
-                    <Button justIcon round color="dribbble">
-                      <i className="fab fa-dribbble" />
-                    </Button>
-                    {` `}
-                    <Button justIcon round color="facebook">
-                      <i className="fab fa-facebook-f" />
-                    </Button>
-                    {` `}
-                    <h4 className={classes.socialTitle}>or be classical</h4>
-                  </div>
-                  <form className={classes.form}>
-                    <CustomInput
-                      formControlProps={{
-                        fullWidth: true,
-                        className: classes.customFormControlClasses
-                      }}
-                      inputProps={{
-                        startAdornment: (
-                          <InputAdornment
-                            position="start"
-                            className={classes.inputAdornment}
-                          >
-                            <Face className={classes.inputAdornmentIcon} />
-                          </InputAdornment>
-                        ),
-                        placeholder: "First Name..."
-                      }}
-                    />
-                    <CustomInput
-                      formControlProps={{
-                        fullWidth: true,
-                        className: classes.customFormControlClasses
-                      }}
-                      inputProps={{
-                        startAdornment: (
-                          <InputAdornment
-                            position="start"
-                            className={classes.inputAdornment}
-                          >
-                            <Email className={classes.inputAdornmentIcon} />
-                          </InputAdornment>
-                        ),
-                        placeholder: "Email..."
-                      }}
-                    />
-                    <CustomInput
-                      formControlProps={{
-                        fullWidth: true,
-                        className: classes.customFormControlClasses
-                      }}
-                      inputProps={{
-                        startAdornment: (
-                          <InputAdornment
-                            position="start"
-                            className={classes.inputAdornment}
-                          >
-                            <Icon className={classes.inputAdornmentIcon}>
-                              lock_outline
-                            </Icon>
-                          </InputAdornment>
-                        ),
-                        placeholder: "Password..."
-                      }}
-                    />
-                    <FormControlLabel
+      {confirmUser ? (
+        <GridContainer justify="center">
+        <GridItem xs={12} sm={6} md={6}>
+          <form>
+            <Card login className={classes[cardAnimaton]}>
+              <CardHeader
+                className={`${classes.cardHeader} ${classes.textCenter}`}
+                color="primary"
+              >
+                <h4 className={classes.cardTitle}>Sign Up</h4>
+              </CardHeader>
+              <CardBody>
+              <CustomInput
+                  labelText="Name"
+                  id="name"
+                  formControlProps={{
+                    fullWidth: true
+                  }}
+                  inputProps={{
+                    onChange: (event) => handleChange(event),
+                    value: user.name,   
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <Face className={classes.inputAdornmentIcon} />
+                      </InputAdornment>
+                    )
+                  }}
+                />
+                <CustomInput
+                  labelText="Phone Number"
+                  id="phone"
+                  formControlProps={{
+                    fullWidth: true
+                  }}
+                  inputProps={{
+                    onChange: (event) => handleChange(event),
+                    value: user.phone,   
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <Code className={classes.inputAdornmentIcon} />
+                      </InputAdornment>
+                    )
+                  }}
+                />
+                <CustomInput
+                  labelText="Email"
+                  id="email"
+                  formControlProps={{
+                    fullWidth: true
+                  }}
+                  inputProps={{
+                    onChange: (event) => handleChange(event),
+                    value: user.email,   
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <Email className={classes.inputAdornmentIcon} />
+                      </InputAdornment>
+                    )
+                  }}
+                />
+                <CustomInput
+                  labelText="Password"
+                  id="password"
+                  formControlProps={{
+                    fullWidth: true
+                  }}
+                  inputProps={{
+                    onChange: (event) => handleChange(event),
+                    value: user.password,
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <Icon className={classes.inputAdornmentIcon}>
+                          lock_outline
+                        </Icon>
+                      </InputAdornment>
+                    ),
+                    autoComplete: "off"
+                  }}
+                />
+                 <FormControlLabel
                       classes={{
                         root: classes.checkboxLabelControl,
                         label: classes.checkboxLabel
@@ -162,23 +194,84 @@ export default function RegisterPage() {
                       }
                       label={
                         <span>
-                          I agree to the{" "}
-                          <a href="#pablo">terms and conditions</a>.
+                          I am registering as a{" "}
+                          <a href="#">lender or banking institution</a>.
                         </span>
                       }
                     />
-                    <div className={classes.center}>
-                      <Button round color="primary">
-                        Get started
-                      </Button>
-                    </div>
-                  </form>
-                </GridItem>
-              </GridContainer>
-            </CardBody>
-          </Card>
+              </CardBody>
+              <CardFooter className={classes.justifyContentCenter}>
+                <Button 
+                  color="primary" 
+                  simple size="lg" 
+                  block
+                  onClick={signUp}>
+                  Let's Go
+                </Button>
+              </CardFooter>
+            </Card>
+          </form>
         </GridItem>
       </GridContainer>
+      ) : (
+        <GridContainer justify="center">
+        <GridItem xs={12} sm={6} md={6}>
+          <form>
+            <Card login className={classes[cardAnimaton]}>
+              <CardHeader
+                className={`${classes.cardHeader} ${classes.textCenter}`}
+                color="primary"
+              >
+                <h4 className={classes.cardTitle}>Sign Up</h4>
+              </CardHeader>
+              <CardBody>
+              <CustomInput
+                  labelText="Email"
+                  id="email"
+                  formControlProps={{
+                    fullWidth: true
+                  }}
+                  inputProps={{
+                    onChange: (event) => handleChange(event),
+                    value: user.email,   
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <Email className={classes.inputAdornmentIcon} />
+                      </InputAdornment>
+                    )
+                  }}
+                />
+                <CustomInput
+                  labelText="Phone Number"
+                  id="confirmCode"
+                  formControlProps={{
+                    fullWidth: true
+                  }}
+                  inputProps={{
+                    onChange: (event) => handleChange(event),
+                    value: user.confirmCode,   
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <Code className={classes.inputAdornmentIcon} />
+                      </InputAdornment>
+                    )
+                  }}
+                />
+              </CardBody>
+              <CardFooter className={classes.justifyContentCenter}>
+                <Button 
+                  color="primary" 
+                  onClick={confirmSignUp}
+                  simple size="lg" 
+                  block>
+                  Verify Your Account
+                </Button>
+              </CardFooter>
+            </Card>
+          </form>
+        </GridItem>
+      </GridContainer>
+      )}
     </div>
   );
 }
