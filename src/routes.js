@@ -73,39 +73,10 @@ var dashRoutes = [
     state: "pageCollapse",
     views: [
       {
-        path: "/pricing-page",
-        name: "Pricing Page",
-        rtlName: "عالتسعير",
-        mini: "PP",
-        rtlMini: "ع",
-        component: PricingPage,
-        layout: "/auth"
-      },
-      {
         path: "/login-page",
-        name: "Login Page",
-        rtlName: "هعذاتسجيل الدخول",
+        name: "Authentication",
         mini: "L",
-        rtlMini: "هعذا",
         component: LoginPage,
-        layout: "/auth"
-      },
-      {
-        path: "/register-page",
-        name: "Register Page",
-        rtlName: "تسجيل",
-        mini: "R",
-        rtlMini: "صع",
-        component: RegisterPage,
-        layout: "/auth"
-      },
-      {
-        path: "/lock-screen-page",
-        name: "Lock Screen Page",
-        rtlName: "اقفل الشاشة",
-        mini: "LS",
-        rtlMini: "هذاع",
-        component: LockScreenPage,
         layout: "/auth"
       },
       {

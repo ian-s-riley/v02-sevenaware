@@ -1,6 +1,6 @@
 {
   "auth": {
-    "v02sevenawaredfa9891e": {
+    "v02sevenaware105db537": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],

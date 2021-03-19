@@ -56,21 +56,6 @@ export default function AuthNavbar(props) {
       </ListItem>
       <ListItem className={classes.listItem}>
         <NavLink
-          to={"/auth/register-page"}
-          className={cx(classes.navLink, {
-            [classes.navLinkActive]: activeRoute("/auth/register-page")
-          })}
-        >
-          <PersonAdd className={classes.listItemIcon} />
-          <ListItemText
-            primary={"Register"}
-            disableTypography={true}
-            className={classes.listItemText}
-          />
-        </NavLink>
-      </ListItem>
-      <ListItem className={classes.listItem}>
-        <NavLink
           to={"/auth/login-page"}
           className={cx(classes.navLink, {
             [classes.navLinkActive]: activeRoute("/auth/login-page")
@@ -78,7 +63,7 @@ export default function AuthNavbar(props) {
         >
           <Fingerprint className={classes.listItemIcon} />
           <ListItemText
-            primary={"Login"}
+            primary={"Authentication"}
             disableTypography={true}
             className={classes.listItemText}
           />
@@ -99,7 +84,7 @@ export default function AuthNavbar(props) {
         <Hidden mdUp>
           <div className={classes.flex}>
             <Button href="#" className={classes.title} color="transparent">
-              MD Pro React
+              Authentication
             </Button>
           </div>
         </Hidden>

@@ -34,10 +34,12 @@ function App() {
           const { payload } = data
           console.log('A new auth event has happened: ', data)
            if (payload.event === 'signIn') {
+                setIsAuthenticated(true)
              //checkUser()
            }
            if (payload.event === 'signOut') {
              console.log('a user has signed out!')
+             setIsAuthenticated(false)
              //checkUser()
            }
         })
@@ -49,9 +51,8 @@ function App() {
 
       async function checkUser() {
         try {
-            const thisUser = await Auth.currentAuthenticatedUser()    
-            console.log('checkUser : thisUser', thisUser)                 
-            setIsAuthenticated(true)
+            const thisUser = await Auth.currentAuthenticatedUser().then(
+            setIsAuthenticated(true))
           } catch (error) {
               console.log('error signing in', error)
           }                 
@@ -68,7 +69,7 @@ function App() {
     ) : (
       <Switch>
         <Route path="/auth" component={AuthLayout} />
-        <Redirect from="/" to="/auth/login-page" />
+        <Redirect to="/auth/login-page" />
       </Switch>
     )}    
   </Router>
