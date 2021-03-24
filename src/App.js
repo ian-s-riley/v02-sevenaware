@@ -27,19 +27,19 @@ import "assets/scss/material-dashboard-pro-react.scss?v=1.9.0";
 const hist = createBrowserHistory();
 
 function App() {
-    const [isAuthenticated, setIsAuthenticated] = useState(false)
+    const [isAuthenticated, setIsAuthenticated] = useState(true)
 
     useEffect(() => {
         Hub.listen('auth', (data) => {
           const { payload } = data
           console.log('A new auth event has happened: ', data)
            if (payload.event === 'signIn') {
-                setIsAuthenticated(true)
+            //setIsAuthenticated(true)
              //checkUser()
            }
            if (payload.event === 'signOut') {
              console.log('a user has signed out!')
-             setIsAuthenticated(false)
+             //setIsAuthenticated(false)
              //checkUser()
            }
         })
@@ -69,7 +69,7 @@ function App() {
     ) : (
       <Switch>
         <Route path="/auth" component={AuthLayout} />
-        <Redirect to="/auth/login-page" />
+        <Redirect from="/" to="/auth/login-page" />
       </Switch>
     )}    
   </Router>

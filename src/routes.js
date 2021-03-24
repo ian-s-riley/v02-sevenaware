@@ -7,8 +7,10 @@ import RegisterPage from "views/Pages/RegisterPage.js";
 import UserProfile from "views/Pages/UserProfile.js";
 
 import SevenAForms from 'views/Forms/SevenAForms'
+import SevenAFields from 'components/SevenAField/SevenAFields'
 import FormTemplate from 'views/FormTemplate/FormTemplate'
 import FormDetail from 'components/FormDetail/FormDetail'
+import FieldEdit from 'components/FieldDetail/FieldEdit'
 import FieldDetail from 'components/FieldDetail/FieldDetail'
 
 // @material-ui/icons
@@ -33,6 +35,13 @@ var dashRoutes = [
     layout: "/admin"
   },
   {
+    path: "/sevenafields",
+    name: "7(a)ware Fields",
+    icon: "content_paste",
+    component: SevenAFields,
+    layout: "/admin"
+  },
+  {
     collapse: true,
     name: "7(a) Screens",
     icon: GridOn,
@@ -48,6 +57,12 @@ var dashRoutes = [
         path: "/fielddetail",
         name: "Field Detail",
         component: FieldDetail,
+        layout: "/admin"
+      },
+      {
+        path: "/fieldedit",
+        name: "Field Edit",
+        component: FieldEdit,
         layout: "/admin"
       },
       {
